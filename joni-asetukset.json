@@ -1,0 +1,10 @@
+{
+  "app": "APIna",
+  "version": 1,
+  "description": "Jonin asetukset: Fortum Tarkka + Vantaan Energia Sähköverkot aikasiirto, EU, joniasdf.github.io. Ei salaisuuksia.",
+  "region": "https://fleet-api.prd.eu.vn.cloud.tesla.com",
+  "domain": "joniasdf.github.io",
+  "client_id": "",
+  "cost": {"margin": 0.59, "tmode": "aika", "tday": 3.80, "tnight": 1.61, "twin": 4.30, "tother": 2.70, "transfer": 3.80, "tax": 2.918, "vat": 25.5, "fixed": 0, "kwh": 40, "kw": 11, "cons": 17},
+  "trip": {"cap": 75, "newRange": 629}
+}

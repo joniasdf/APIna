@@ -1,5 +1,5 @@
 const $=id=>document.getElementById(id);let cur=null;
-function tab(t){['E','S','H','T','R','G'].forEach(x=>{$(x).style.display=x==t?(x=='E'?'flex':'block'):'none';$('t'+x).classList.toggle('on',x==t)});if(t=='S'&&!$('dash').innerHTML)demo();if(t=='H')costInit();if(t=='T'&&window.tripsInit)tripsInit();if(t=='R'&&window.ctrlInit)ctrlInit();if(t=='G'&&window.wizInit)wizInit()}
+function tab(t){['E','S','H','T','R','G','A'].forEach(x=>{$(x).style.display=x==t?(x=='E'?'flex':'block'):'none';$('t'+x).classList.toggle('on',x==t)});if(t=='S'&&!$('dash').innerHTML)demo();if(t=='H')costInit();if(t=='T'&&window.tripsInit)tripsInit();if(t=='R'&&window.ctrlInit)ctrlInit();if(t=='G'&&window.wizInit)wizInit();if(t=='A'&&window.settingsInit)settingsInit()}
 $('cnt').textContent=ENDPOINTS.length+' rajapintaa';
 $('scopes').innerHTML=Object.entries(SCOPES).map(([k,v])=>`<div class=kv><span><code>${k}</code></span><span>${v}</span></div>`).join('');
 function render(){const q=$('q').value.toLowerCase();let h='',last='';ENDPOINTS.forEach((e,i)=>{if(q&&!JSON.stringify(e).toLowerCase().includes(q))return;if(e.c!=last){h+=`<div class=cat>${e.c}</div>`;last=e.c}

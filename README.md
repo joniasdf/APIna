@@ -19,3 +19,9 @@ Tesla-julkinen avain: https://joniasdf.github.io/.well-known/appspecific/com.tes
 1. Sovelluksessa: **Käyttöönotto**-välilehti (vaiheet, kopioitavat arvot, QR-koodi virtuaaliavaimelle).
 2. Tietokoneella: Windows `setup_tesla.bat` (tuplaklikkaus), Mac/Linux `./setup_tesla.sh`. Kysyy Client ID + Secret, rekisteröi domainin (EU), tarkistaa avaimen, kirjaa sisään (paluu http://localhost:8787/callback), tallentaa tokens.json ja listaa autot. Päivitys: `setup_tesla.py refresh_token`.
 Tesla-sovelluksen Redirect URI -listaan: `https://joniasdf.github.io/APIna/callback.html` **ja** `http://localhost:8787/callback`.
+
+## Asetusten tuonti/vienti
+Asetukset-välilehti: vie JSON/QR/linkki, tuo tiedostosta, liittämällä, URL:sta tai QR-skannauksella (jos laite tukee BarcodeDetectoria).
+Jonin asetukset yhdellä napautuksella: https://joniasdf.github.io/APIna/?config=joni-asetukset.json
+tai suoraan linkkiin pakattuna: https://joniasdf.github.io/APIna/#config=eyJhcHAiOiJBUEluYSIsInZlcnNpb24iOjEsInJlZ2lvbiI6Imh0dHBzOi8vZmxlZXQtYXBpLnByZC5ldS52bi5jbG91ZC50ZXNsYS5jb20iLCJkb21haW4iOiJqb25pYXNkZi5naXRodWIuaW8iLCJjbGllbnRfaWQiOiIiLCJjb3N0Ijp7Im1hcmdpbiI6MC41OSwidG1vZGUiOiJhaWthIiwidGRheSI6My44LCJ0bmlnaHQiOjEuNjEsInR3aW4iOjQuMywidG90aGVyIjoyLjcsInRyYW5zZmVyIjozLjgsInRheCI6Mi45MTgsInZhdCI6MjUuNSwiZml4ZWQiOjAsImt3aCI6NDAsImt3IjoxMSwiY29ucyI6MTd9LCJ0cmlwIjp7ImNhcCI6NzUsIm5ld1JhbmdlIjo2Mjl9fQ
+Tokeneita ei koskaan tuoda linkistä/QR:stä.
