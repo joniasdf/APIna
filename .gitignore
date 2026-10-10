@@ -12,3 +12,5 @@ android/app/src/main/assets/public/
 *.key
 tesla-keys/
 .env
+tokens.json
+tesla_config.json

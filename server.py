@@ -40,6 +40,8 @@ class H(http.server.SimpleHTTPRequestHandler):
                 for vin, t, j in c.execute("SELECT vin,t,j FROM snap ORDER BY t"): out.setdefault(vin, []).append(point(t, json.loads(j)))
                 c.close()
             return self._j(200, out)
+        if self.path.startswith("/callback"):
+            self.path = "/callback.html" + self.path[len("/callback"):].lstrip("/").replace(".html", "", 1) if not self.path.startswith("/callback.html") else self.path
         return super().do_GET()
     def do_POST(self):
         if self.path != "/proxy": return self.send_error(404)
@@ -47,7 +49,7 @@ class H(http.server.SimpleHTTPRequestHandler):
         url = req.get("url", "")
         if not url.startswith(ALLOWED): return self._j(400, {"error": "URL ei sallittu"})
         body = req.get("body"); data = body.encode() if body else None
-        hdr = {"Content-Type": "application/json", "User-Agent": "TeslaApiExplorer/1.0", "Accept": "application/json"}
+        hdr = {"Content-Type": req.get("ctype") or "application/json", "User-Agent": "TeslaApiExplorer/1.0", "Accept": "application/json"}
         if req.get("token"): hdr["Authorization"] = "Bearer " + req["token"]
         r = urllib.request.Request(url, data=data, method=req.get("method", "GET"), headers=hdr)
         try:

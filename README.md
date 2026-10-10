@@ -14,3 +14,8 @@ Huom: jatkuva pollaus maksaa Fleet API -kutsuja; Fleet Telemetry on tehokkaampi 
 Web-versio: https://joniasdf.github.io/APIna/ (OAuth Redirect URI: https://joniasdf.github.io/APIna/callback.html).
 Pagesissa ei ole server.py-proxyä: Tesla Fleet API ja api.porssisahko.net eivät palauta CORS-otsakkeita, joten oikeat API-kutsut toimivat vain paikallisesti (`python3 server.py`) tai Android-sovelluksessa (CapacitorHttp). Pagesissa toimivat selaus, demotila, ohjeet ja curl-generointi; hinnat näytetään demona.
 Tesla-julkinen avain: https://joniasdf.github.io/.well-known/appspecific/com.tesla.3p.public-key.pem (repo joniasdf.github.io). Yksityinen avain EI ole repossa.
+
+## Helppo käyttöönotto
+1. Sovelluksessa: **Käyttöönotto**-välilehti (vaiheet, kopioitavat arvot, QR-koodi virtuaaliavaimelle).
+2. Tietokoneella: Windows `setup_tesla.bat` (tuplaklikkaus), Mac/Linux `./setup_tesla.sh`. Kysyy Client ID + Secret, rekisteröi domainin (EU), tarkistaa avaimen, kirjaa sisään (paluu http://localhost:8787/callback), tallentaa tokens.json ja listaa autot. Päivitys: `setup_tesla.py refresh_token`.
+Tesla-sovelluksen Redirect URI -listaan: `https://joniasdf.github.io/APIna/callback.html` **ja** `http://localhost:8787/callback`.
