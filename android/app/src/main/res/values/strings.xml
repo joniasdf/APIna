@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Fleet API -tutkija</string>
+    <string name="title_activity_main">Fleet API -tutkija</string>
+    <string name="package_name">fi.rapanen.teslaapiexplorer</string>
+    <string name="custom_url_scheme">fi.rapanen.teslaapiexplorer</string>
+</resources>

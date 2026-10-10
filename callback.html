@@ -1,0 +1,11 @@
+<!doctype html><html lang="fi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OAuth callback – APIna</title>
+<style>body{font-family:system-ui;background:#0b0b0c;color:#eee;max-width:760px;margin:auto;padding:20px}code,pre{background:#000;color:#8ab4ff;padding:10px;border-radius:8px;display:block;white-space:pre-wrap;word-break:break-all}h1{color:#e82127;font-size:20px}button{background:#e82127;color:#fff;border:0;padding:10px 14px;border-radius:8px;margin:6px 0}a{color:#8ab4ff}</style></head><body>
+<h1>Tesla OAuth -paluu</h1><div id=o></div>
+<script>const q=new URLSearchParams(location.search),code=q.get('code'),st=q.get('state'),err=q.get('error');const R=location.origin+location.pathname;
+const o=document.getElementById('o');
+if(err)o.innerHTML='<p>Virhe: <b>'+err+'</b> '+(q.get('error_description')||'')+'</p>';
+else if(!code)o.innerHTML='<p>Tämä sivu on Tesla-sovelluksen Redirect URI. Ei <code>code</code>-parametria.</p><p><a href="./">← Takaisin sovellukseen</a></p>';
+else{const c=`curl -X POST https://fleet-auth.prd.vn.cloud.tesla.com/oauth2/v3/token \\\n -d grant_type=authorization_code \\\n -d client_id=$CLIENT_ID \\\n -d client_secret=$CLIENT_SECRET \\\n -d code=${code} \\\n -d redirect_uri=${R} \\\n -d audience=https://fleet-api.prd.eu.vn.cloud.tesla.com`;
+o.innerHTML=`<p>Kirjautuminen onnistui. Koodi on voimassa vain hetken (minuutteja) ja kertakäyttöinen.</p><b>code</b><pre id=c>${code}</pre><button onclick="navigator.clipboard.writeText('${code}')">Kopioi code</button><p>state: <code>${st||'–'}</code> (tarkista että vastaa lähettämääsi)</p>
+<p>Vaihda koodi tokeniksi omalla koneellasi (client_secret ei saa olla selaimessa):</p><pre>${c}</pre><button onclick="navigator.clipboard.writeText(document.querySelectorAll('pre')[1].textContent)">Kopioi curl</button>
+<p>Vastauksen <b>access_token</b> → sovelluksen Kokeile-paneeliin; <b>refresh_token</b> talteen turvallisesti.</p><p><a href="./">← Sovellukseen</a></p>`;history.replaceState(null,'',location.pathname)}</script></body></html>

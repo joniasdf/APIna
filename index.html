@@ -1,0 +1,47 @@
+<!doctype html><html lang="fi"><head><meta charset="utf-8"><title>Tesla Fleet API -tutkija</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<script src="vendor/leaflet.js"></script>
+<script src="vendor/chart.umd.min.js"></script>
+<style>
+@font-face{font-family:Inter;src:url(vendor/fonts/inter.woff2) format("woff2");font-weight:100 900}
+:root{--red:#e82127;--bg:#0b0b0c;--card:#17181a;--line:#26272a;--mut:#9a9ca1}
+*{box-sizing:border-box}body{margin:0;background-image:radial-gradient(1200px 600px at 80% -10%,#e8212722,transparent),radial-gradient(800px 500px at -10% 110%,#3b82f614,transparent);background-attachment:fixed;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:#f2f2f2;-webkit-font-smoothing:antialiased}
+header{position:sticky;top:0;z-index:50;background:#000d;backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:10px 14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+header h1{font-size:16px;margin:0;letter-spacing:.12em;text-transform:uppercase;font-weight:600}header h1 b{color:var(--red)}
+nav{display:flex;gap:4px;overflow-x:auto;width:100%;order:3}nav button{flex:1;background:none;border:0;color:var(--mut);padding:9px 10px;border-radius:8px;cursor:pointer;font-size:14px;white-space:nowrap}nav button.on{background:var(--card);color:#fff;box-shadow:inset 0 -2px var(--red)}
+#cnt{margin-left:auto;font-size:12px;color:var(--mut)}
+.wrap{display:flex;flex-direction:column}#list,#side{padding:12px}
+@media(min-width:900px){nav{width:auto;order:0}.wrap{flex-direction:row;height:calc(100vh - 58px)}#list{width:45%;overflow:auto;border-right:1px solid var(--line)}#side{flex:1;overflow:auto}}
+input,select,textarea{background:#101113;color:#eee;border:1px solid var(--line);border-radius:8px;padding:10px;width:100%;font-size:15px}input:focus,select:focus,textarea:focus{outline:1px solid var(--red)}
+.cat{margin:18px 0 6px;color:var(--red);font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase}.ep{padding:9px;border-radius:8px;cursor:pointer;font-size:13px}.ep:hover{background:var(--card)}
+.m{display:inline-block;width:54px;font-weight:700;font-size:11px}.GET{color:#3ecf8e}.POST{color:#f5a524}.DELETE{color:#ff5a5f}code{color:#8ab4ff;word-break:break-all}
+.tag{display:inline-flex;align-items:center;gap:3px;background:#222327;border-radius:6px;padding:2px 7px;font-size:11px;margin:2px}pre{background:#000;border:1px solid var(--line);border-radius:8px;padding:10px;overflow:auto;font-size:12px;max-height:320px}
+button.go{background:var(--red);color:#fff;border:0;padding:10px 16px;border-radius:8px;cursor:pointer;margin-top:6px;font-weight:600}button.go.sec{background:#2a2b2f}label{font-size:12px;color:var(--mut);display:block;margin-top:10px}
+.pad{padding:12px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}.card{background:linear-gradient(160deg,#ffffff0d,#ffffff03);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid #ffffff14;border-radius:18px;padding:16px;box-shadow:0 8px 30px #0006,inset 0 1px #ffffff12}.card h3{margin:0 0 10px;font-size:12px;color:var(--red);letter-spacing:.1em;text-transform:uppercase}
+.kv{font-size:13px;display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid var(--line);padding:5px 0}.kv span:last-child{color:#8ab4ff;text-align:right;max-width:55%;word-break:break-all}
+.demo{background:#f5a524;color:#000;padding:8px 12px;border-radius:8px;font-weight:700}#map{height:240px;border-radius:10px}
+.car{position:relative;width:140px;height:230px;margin:10px auto;border:3px solid #444;border-radius:50px}.tp{position:absolute;font-size:12px;background:#222;padding:4px 6px;border-radius:6px;white-space:nowrap}
+.big{font-size:28px;font-weight:600}.mut{color:var(--mut);font-size:12px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button.i{width:18px;height:18px;border-radius:50%;border:1px solid #555;background:none;color:var(--mut);font-size:11px;font-style:italic;padding:0;cursor:pointer;margin-left:4px;vertical-align:middle;flex:none}button.i:hover{border-color:var(--red);color:#fff}
+#infobox{display:none;position:fixed;left:12px;right:12px;bottom:12px;max-width:480px;margin:auto;z-index:99;background:#1f2023;border:1px solid var(--red);border-radius:14px;padding:14px;box-shadow:0 10px 40px #000}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:5px;border-bottom:1px solid var(--line);text-align:left}
+pre{white-space:pre-wrap;word-break:break-all}</style>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#000000"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/icon-192.png"></head><body>
+<header><h1><b>T</b> Fleet API -tutkija</h1><nav><button id="tE" class="on" onclick="tab('E')">Rajapinnat</button> <button id="tS" onclick="tab('S')">Tilastot</button><button id="tH" onclick="tab('H')">Latauskustannukset</button><button id="tT" onclick="tab('T')">Ajopäiväkirja</button><button id="tR" onclick="tab('R')">Ohjaus</button><button id="tG" onclick="tab('G')">Ohjeet</button></nav><span id="cnt" style="margin-left:auto;font-size:13px"></span></header>
+<div id="pagesNote" style="display:none;background:#f5a52422;border-bottom:1px solid #f5a52455;padding:8px 14px;font-size:13px">GitHub Pages -versio: Teslan rajapinta ja pörssisähkö-API eivät salli suoria selainkutsuja (CORS), joten oikeat kutsut toimivat vain paikallisella <code>python3 server.py</code> -palvelimella tai Android-sovelluksessa. Selaus, demotila, ohjeet ja curl-komennot toimivat täällä.</div><div id="E" class="wrap"><div id="list"><input id="q" placeholder="Hae (esim. charge, lock, energy, scope)…" oninput="render()"><div id="eps"></div></div>
+<div id="side"><div id="det"><p>Valitse rajapinta vasemmalta.</p><h3>OAuth-scopet</h3><div id="scopes"></div></div>
+<h2>Kokeile</h2>
+<label>Alue / base URL</label><select id="reg"><option value="https://fleet-api.prd.eu.vn.cloud.tesla.com">EU (Eurooppa, Lähi-itä, Afrikka)</option><option value="https://fleet-api.prd.na.vn.cloud.tesla.com">NA (Pohjois-Amerikka, Aasia-Tyynimeri)</option><option value="https://fleet-api.prd.cn.vn.cloud.tesla.cn">CN (Kiina)</option></select>
+<label>Access token (Bearer)</label><input id="tok" type="password" placeholder="eyJ…"><label style="display:inline"><input type="checkbox" id="rem" style="width:auto"> Muista tällä selaimella (localStorage)</label>
+<label>Metodi ja polku</label><div style="display:flex;gap:6px"><select id="mth" style="width:100px"><option>GET</option><option>POST</option><option>DELETE</option></select><input id="pth"></div>
+<label>Body (JSON)</label><textarea id="bdy" rows="4"></textarea>
+<button class="go" onclick="send()">Lähetä</button><label>curl</label><pre id="curl"></pre><label>Vastaus</label><pre id="out"></pre></div></div>
+<div id="S" class=pad style="display:none">
+<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="go" onclick="loadVehicles()">Hae ajoneuvot (token Kokeile-välilehdeltä)</button><select id="veh" style="width:260px"></select><button class="go" onclick="loadStats()">Päivitä tilastot</button><button class="go sec" onclick="demo()">Demotila</button><label style="display:inline"><input type="checkbox" id="wake" style="width:auto"> herätä ensin</label><span id="sst"></span></div>
+<div id="dash"></div></div>
+<div id="H" class=pad style="display:none"></div><div id="infobox"></div><div id="T" class=pad style="display:none"></div><div id="R" class=pad style="display:none"></div><div id="G" class=pad style="display:none;max-width:900px;margin:auto"></div>
+<script src="data.js"></script><script src="ui.js"></script><script src="info.js"></script><script src="cost.js"></script><script src="app.js"></script><script>if(/github\.io$/.test(location.hostname))document.getElementById("pagesNote").style.display="block"</script><script src="tessie.js"></script><script src="guide.js"></script><script>if("serviceWorker" in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js")</script></body></html>
+<style>.gauge{display:block;margin:auto;max-width:200px}.gauge .arc{transition:stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 0 6px var(--glow))}
+.gval{font-size:30px;font-weight:600;fill:#fff}.glab{font-size:11px;fill:#9a9ca1;letter-spacing:.1em}.carsvg{display:block;margin:auto;max-width:260px}
+.leaflet-container{background:#111}.hero{display:flex;flex-wrap:wrap;gap:16px;align-items:baseline}.hero h2{margin:0;font-weight:600}</style><style>.darktiles{filter:invert(1) hue-rotate(180deg) brightness(.85) contrast(.9) saturate(.3)}</style>

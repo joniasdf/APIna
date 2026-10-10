@@ -1,0 +1,2 @@
+{"name":"tesla-api-explorer","version":"1.0.0","private":true,"scripts":{"build:www":"node scripts/copy-www.js","cap:sync":"npm run build:www && npx cap sync android"},
+"dependencies":{"@capacitor/android":"^6.2.0","@capacitor/core":"^6.2.0"},"devDependencies":{"@capacitor/cli":"^6.2.0"}}

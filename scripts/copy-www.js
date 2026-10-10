@@ -1,0 +1,2 @@
+const fs=require('fs'),p=require('path');const R=p.join(__dirname,'..'),W=p.join(R,'www');fs.rmSync(W,{recursive:true,force:true});fs.mkdirSync(W);
+for(const f of ['index.html','app.js','data.js','info.js','ui.js','cost.js','tessie.js','guide.js','callback.html','sw.js','manifest.webmanifest','vendor','icons'])fs.cpSync(p.join(R,f),p.join(W,f),{recursive:true});console.log('www valmis');
